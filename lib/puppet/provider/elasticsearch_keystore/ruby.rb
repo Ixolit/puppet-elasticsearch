@@ -25,7 +25,7 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
 
   commands :keystore => "#{home_dir}/bin/elasticsearch-keystore"
 
-  def self.run_keystore(args, instance, configdir = '/etc/elasticsearch', stdin = nil, ignoreErr = false)
+  def self.run_keystore(args, instance, configdir = '/etc/elasticsearch', stdin = nil, failonfail = true)
     options = {
       :custom_environment => {
         'ES_INCLUDE'   => File.join(defaults_dir, "elasticsearch-#{instance}"),
@@ -33,7 +33,7 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
       },
       :uid        => 'elasticsearch',
       :gid        => 'elasticsearch',
-      :failonfail => true
+      :failonfail => ignoreErr
     }
 
     unless stdin.nil?
@@ -97,7 +97,7 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
   def flush
     case @property_flush[:ensure]
     when :present
-      debug(self.class.run_keystore(['create'], resource[:name], resource[:configdir], nil, true))
+      debug(self.class.run_keystore(['create'], resource[:name], resource[:configdir], nil, false))
       @property_flush[:settings] = resource[:settings]
     when :absent
       File.delete(File.join([
