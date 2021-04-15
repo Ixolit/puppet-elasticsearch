@@ -52,11 +52,7 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
       end
     end
 
-    if ignoreErr
-      stdout
-    else
-      stdout.exitstatus.zero? ? stdout : raise(Puppet::Error, stdout)
-    end
+    stdout.exitstatus.zero? ? stdout : raise(Puppet::Error, stdout)
   end
 
   def self.present_keystores
