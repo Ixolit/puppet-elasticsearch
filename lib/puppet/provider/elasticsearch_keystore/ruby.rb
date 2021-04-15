@@ -33,7 +33,7 @@ Puppet::Type.type(:elasticsearch_keystore).provide(
       },
       :uid        => 'elasticsearch',
       :gid        => 'elasticsearch',
-      :failonfail => ignoreErr
+      :failonfail => failonfail
     }
 
     unless stdin.nil?
